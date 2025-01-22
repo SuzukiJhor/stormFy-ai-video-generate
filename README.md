@@ -1,6 +1,7 @@
-Aplicação Gerador de video. 
-Full Stack 
-Next.js
-Autenticação 
-Banco de dados
-Integração modelos de IA
+#### ⚒️ Aplicação Gerador de video. <br>
+#### 🪄 Full Stack  <br>
+#### 🪢 Autenticação <br>
+#### 🔦 Banco de dados <br>
+#### ⚙️ Integração modelos de IA <br>
+
+
