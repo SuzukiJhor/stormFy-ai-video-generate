@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import SelectTopic from './-components/SelectTopic'
+import SelectStyle from './-components/SelectStyle';
 
 export default function CreateNew() {
   const [ formData, seFormData ] = React.useState([]);
@@ -13,6 +14,8 @@ export default function CreateNew() {
       <div className='mt-10 shadow-md p-10'>
         {/* Topico */}
         <SelectTopic onUserSelect={onHandleInputChange}/>
+        {/* Estilo */}
+        <SelectStyle onUserSelect={onHandleInputChange}/>
       </div>
     </div>
   )
