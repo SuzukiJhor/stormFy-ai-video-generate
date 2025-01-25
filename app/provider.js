@@ -25,6 +25,7 @@ export default function Provider({ children }) {
       imageUrl: user?.imageUrl,
     })
   }
+
   async function fetchUser() {
     return await db.select().from(Users)
     .where(eq(Users.email,user?.primaryEmailAddress?.emailAddress));
