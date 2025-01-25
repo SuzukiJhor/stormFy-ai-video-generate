@@ -1,4 +1,4 @@
-#### ⚒️ Aplicação Gerador de video. <br>
+#### ⚒️ Aplicação Gerador de video com IA. <br>
 #### 🪄 Full Stack  <br>
 #### 🪢 Clerk para Autenticação <br>
 #### 🔦 Banco de dados <br>
