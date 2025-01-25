@@ -1,9 +1,12 @@
 /** @type {import("drizzle-kit").Config} */
 
-export default {
+import { defineConfig } from "drizzle-kit";
+
+
+export default defineConfig ({
     dialect: 'postgresql', // 'mysql' | 'sqlite' | 'turso'
     schema: './configs/schema.js',
     dbCredentials: {
-      url: 'postgresql://neondb_owner:npg_pvnai3gzbPJ9@ep-raspy-credit-a88vl7pa.eastus2.azure.neon.tech/neondb?sslmode=req',
+      url: 'postgresql://neondb_owner:npg_pvnai3gzbPJ9@ep-raspy-credit-a88vl7pa-pooler.eastus2.azure.neon.tech/stormfy-ai-video-generator?sslmode=require',
     }
-  }
+  })
