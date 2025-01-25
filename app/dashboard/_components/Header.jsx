@@ -8,7 +8,7 @@ export default function Header() {
     <div className='p-3 px-5 flex items-center justify-between shadow-md'>
         <div className='flex gap-3 items-center'>
             <Image src={'/login03.jpg'} alt='logo' width={30} height={30}/>
-            <h2 className='font-bold text-xl'>Videos Curtos</h2>
+            <h2 className='font-bold text-xl'>Videos IA</h2>
         </div>
         <div className='flex gap-3 items-center'>
             <Button className='hover:bg-primary hover:text-white' variant="secondary">DashBoard</Button>

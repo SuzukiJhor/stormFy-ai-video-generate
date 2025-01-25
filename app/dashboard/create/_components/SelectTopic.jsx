@@ -9,9 +9,10 @@ import {
   } from "@/components/ui/select"
 import { Textarea } from '@/components/ui/textarea';
 
+const options = [ 'Prompt Customizado', 'História Aleatória IA', 'História de Medo']
+
 export default function SelectTopic({onUserSelect}) {
     const [ selectedOption, setSelectedOption ] = React.useState();
-    const options = [ 'Prompt Customizado', 'História Aleatória IA', 'História de Medo']
   return (
     <div>
         <h2 className='font-bold text-2xl text-primary'>Conteudo</h2>

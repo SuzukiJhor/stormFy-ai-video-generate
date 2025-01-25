@@ -1,7 +1,8 @@
 'use client'
 import React from 'react'
-import SelectTopic from './-components/SelectTopic'
-import SelectStyle from './-components/SelectStyle';
+import SelectTopic from './_components/SelectTopic'
+import SelectStyle from './_components/SelectStyle';
+import SelectDurations from './_components/SelectDurations';
 
 export default function CreateNew() {
   const [ formData, seFormData ] = React.useState([]);
@@ -16,6 +17,8 @@ export default function CreateNew() {
         <SelectTopic onUserSelect={onHandleInputChange}/>
         {/* Estilo */}
         <SelectStyle onUserSelect={onHandleInputChange}/>
+        {/* Duração */}
+        <SelectDurations onUserSelect={onHandleInputChange}/>
       </div>
     </div>
   )

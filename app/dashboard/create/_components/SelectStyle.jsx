@@ -1,27 +1,29 @@
 import Image from 'next/image'
 import React from 'react'
 
+const styleOptions = [
+    {
+        name: 'Realista',
+        image: '/realistic.jpg',
+        description: 'imagem realista'
+    },
+    {
+        name: 'Cartoon',
+        image: '/cartoon.png',
+        description: 'imagem de cartoon'
+
+    },
+    {
+        name: 'Comic',
+        image: '/comic.jpg',
+        description: 'imagem Comi'
+
+    },
+]
+
 export default function SelectStyle({onUserSelect}) {
     const [ selectedOption, setSelectedOption ] = React.useState();
-    const styleOptions = [
-        {
-            name: 'Realista',
-            image: '/realistic.jpg',
-            description: 'imagem realista'
-        },
-        {
-            name: 'Cartoon',
-            image: '/cartoon.png',
-            description: 'imagem de cartoon'
-
-        },
-        {
-            name: 'Comic',
-            image: '/comic.jpg',
-            description: 'imagem Comi'
-
-        },
-    ]
+    
   return (
     <div className='mt-7'>
         <h2 className='font-bold text-2xl text-primary'>Style</h2>
