@@ -1,3 +1,5 @@
+![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
+
 #### ⚒️ Aplicação Gerador de video com IA. <br>
 #### 🪢 Clerk para Autenticação https://clerk.com/ <br>
 #### 🔦 PostGree ServerLess Neon https://neon.tech/ <br>
