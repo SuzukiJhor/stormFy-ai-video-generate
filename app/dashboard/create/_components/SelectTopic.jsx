@@ -9,7 +9,14 @@ import {
   } from "@/components/ui/select"
 import { Textarea } from '@/components/ui/textarea';
 
-const options = [ 'Prompt Customizado', 'História Aleatória IA', 'História de Medo']
+const options = [ 
+  'Prompt Customizado', 
+  'Motivacional', 
+  'História Aleatória IA', 
+  'Fatos divertidos', 
+  'História para dormir', 
+  'Fatos históricos'
+]
 
 export default function SelectTopic({onUserSelect}) {
     const [ selectedOption, setSelectedOption ] = React.useState();
@@ -35,7 +42,7 @@ export default function SelectTopic({onUserSelect}) {
             <Textarea 
               className='mt-03' 
               placeholder='Escreva seu Prompt Aqui'
-              onChange={(e)=> onUserSelect('Topic', e.target.value)}
+              onChange={(e)=> onUserSelect('topic', e.target.value)}
             />
         }
     </div>

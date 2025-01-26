@@ -18,7 +18,7 @@ export default function SelectDurations({onUserSelect}) {
         <p className='text-gray-500'>Selecione a Duração do Video</p>
         <Select onValueChange={(value)=> {
             setSelectedOption(value);
-            value != 'Prompt Customizado' && onUserSelect('topic', value)
+            value != 'Prompt Customizado' && onUserSelect('duration', value)
         }}>
             <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Selecione Duração" />
