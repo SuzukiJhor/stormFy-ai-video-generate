@@ -3,5 +3,6 @@
 #### 🪢 Clerk para Autenticação <br>
 #### 🔦 Banco de dados <br>
 #### ⚙️ Integração modelos de IA <br>
+#### ⚡icons -  lucide https://lucide.dev/
 
 
