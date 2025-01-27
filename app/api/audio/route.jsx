@@ -1,31 +1,42 @@
 import { NextResponse } from "next/server";
-import * as PlayHT from 'playht';
 import fs from 'fs';
 
 export async function POST(req) {
+  const { data } = await req.json();
+  console.log('API - AUDIO', data);
 
-    // await initializePlayHT();
-    const { data } = await req.json();
-    console.log('API - AUDIO', data);
-    return NextResponse.json({Resultado: 'Success'})
-}
+  const url = 'https://api.play.ht/api/v2/tts/stream';
+  // const url = process.env.NEXT_PUBLIC_PLAYHT_URL;
 
-async function initializePlayHT() {
-    try {
-        PlayHT.init({
-          apiKey: process.env.NEXT_PUBLIC_PLAYHT_API_KEY,
-          userId: process.env.NEXT_PUBLIC_PLAYHT_USER_ID,
-        });
-      } catch (error) {
-        console.log("Falha ao inicializar PlayHT SDK", error.message);
+  const options = {
+    method: 'POST',
+    headers: {
+      accept: 'audio/mpeg',
+      'content-type': 'application/json',
+      AUTHORIZATION: 'f3cc6d3be2ae4e93aff99c5254ac5953',
+      'X-USER-ID': '7nUa9SZuEhVncBs25jrlu6xvDdn1'
+    },
+    body: JSON.stringify({
+      voice: 's3://voice-cloning-zero-shot/d9ff78ba-d016-47f6-b0ef-dd630f59414e/female-cs/manifest.json',
+      output_format: 'mp3',
+      voice_engine: 'PlayDialog',
+      text: data.text
+    })
+  };
+  
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`Erro ao obter áudio: ${response.statusText}`);
     }
-}
+    const audioData = await response.arrayBuffer();
+    const audioBuffer = Buffer.from(audioData);
+    fs.writeFileSync('audio.mp3', audioBuffer);
+    return NextResponse.json({ Resultado: 'Sucesso' });
 
-// async function streamAudio(text = '') {
-//   const stream = await PlayHT.stream('All human wisdom is summed up in these two words: Wait and hope.', { voiceEngine: 'PlayDialog' });
-//   stream.on('data', (chunk) => {
-//     // Do whatever you want with the stream, you could save it to a file, stream it in realtime to the browser or app, or to a telephony system
-//     fs.appendFileSync('output.mp3', chunk);
-//   });
-//   return stream;
-// }
+  } catch (error) {
+    console.error('Erro ao gerar áudio:', error.message);
+    return NextResponse.json({ error: 'Erro ao gerar áudio' }, { status: 500 });
+  }
+}

@@ -70,8 +70,7 @@ export default function CreateNew() {
   }
 
   function videoScript() {
-    const prompt = 
-    `Write a script to generate ${formData.duration} video on topic: ${formData.topic} along with AI image prompt in ${formData.ImageStyle} format for each scene and give me result in JSON format with imagePrompt and ContextText as field, No Plain Text`;
+    const prompt = `Escreva um script para gerar um vídeo de ${formData.duration} sobre o tema: ${formData.topic}, juntamente com um prompt de imagem gerado por IA no formato ${formData.ImageStyle} para cada cena, e forneça o resultado no formato JSON com os campos imagePrompt e ContextText. Não inclua texto simples.`;
     return prompt;
   }
 
