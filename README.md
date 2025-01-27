@@ -5,7 +5,7 @@
 #### 🔦 PostGree ServerLess Neon https://neon.tech/ <br>
 #### 🎡 Drizzle ORM https://orm.drizzle.team/ <br>
 #### 🌏 Firebase [https://orm.drizzle.team](https://firebase.google.com/?hl=pt-br) <br>
-#### ⚙️ Integração modelos de IA https://cloud.google.com/ai/generative-ai?hl=pt-br <br>
+#### ⚙️ Integração modelos de IA - Google IA - https://cloud.google.com/ai/generative-ai?hl=pt-br <br>
 #### ⚡icons -  lucide https://lucide.dev/
 
 ![image](https://github.com/user-attachments/assets/dd528923-554f-4dd5-94ac-91a96632d012)
