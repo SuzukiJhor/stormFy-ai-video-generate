@@ -5,8 +5,10 @@ import SelectStyle from './_components/SelectStyle';
 import SelectDurations from './_components/SelectDurations';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
+import LoadingCreate from './_components/LoadingCreate';
 
 export default function CreateNew() {
+  const [ loading, setLoading ] = React.useState(false);
   const [ formData, setFormData ] = React.useState([]);
 
   const onHandleInputChange = (fieldName, fieldValue) => {
@@ -18,7 +20,9 @@ export default function CreateNew() {
 
   const onHandleCreateCick = async () => {
     const prompt = videoScript();
-    await postVideoScriptRequest(prompt);
+    setLoading(true);
+    const dataResult = await postVideoScriptRequest(prompt);
+    setLoading(false);
   }
 
   async function postVideoScriptRequest(prompt) {
@@ -49,6 +53,7 @@ export default function CreateNew() {
           className='mt-10 w-full'
           onClick={onHandleCreateCick}
         >Criar Short Video</Button>
+        <LoadingCreate loading={true} />
       </div>
     </div>
   )
