@@ -8,6 +8,7 @@
 #### ⚙️ Integração modelos de IA - Google IA - https://cloud.google.com/ai/generative-ai?hl=pt-br <br>
 #### ⚡icons -  lucide https://lucide.dev/
 
+![image](https://github.com/user-attachments/assets/d0f0ad86-c227-4d6b-9179-f0553744eff9)
+
 ![image](https://github.com/user-attachments/assets/dd528923-554f-4dd5-94ac-91a96632d012)
 
-![image](https://github.com/user-attachments/assets/d0f0ad86-c227-4d6b-9179-f0553744eff9)
