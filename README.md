@@ -4,7 +4,7 @@
 #### 🪢 Clerk para Autenticação https://clerk.com/ <br>
 #### 🔦 PostGree ServerLess Neon https://neon.tech/ <br>
 #### 🎡 Drizzle ORM https://orm.drizzle.team/ <br>
-#### 🌏 Firebase [https://orm.drizzle.team](https://firebase.google.com/?hl=pt-br) <br>
+#### 🌏 Supabase - Storage<br>
 #### ⚙️ Integração modelos de IA - Google IA - https://cloud.google.com/ai/generative-ai?hl=pt-br <br>
 #### ⚡icons -  lucide https://lucide.dev/
 
