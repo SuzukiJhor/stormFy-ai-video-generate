@@ -19,12 +19,14 @@ export default function CreateNew() {
     }))
   }
 
-  const onHandleCreateCick = async () => {
+  const onHandleClickCreate = async () => {
     const prompt = videoScript();
     setLoading(true);
     const script = await postVideoScriptRequest(prompt);
-    const result = await generateAudio(script);
-    const response = await postAudioScriptRequest(result);
+    const urlPublicAudio = await postAudioScriptRequest(script);
+    const response = await postCaptionScriptRequest(urlPublicAudio);
+    // const result = await generateAudioScript(script);
+    // const response = await postAudioScriptRequest(result);
     setLoading(false);
     console.log('Resultado', response);
   }
@@ -40,10 +42,22 @@ export default function CreateNew() {
     }
   }
 
+  async function postCaptionScriptRequest(data) {
+    try {
+      console.log('before postCaptionScriptRequest', data)
+      const response = await axios.post('/api/caption', {
+        data
+      })
+      return response.data;
+    } catch(err) {
+      console.error('postAudioScriptRequest', err)
+    }
+  }
+
   async function postVideoScriptRequest(prompt) {
     try {
       const response = await axios.post('/api/video-script', {
-        prompt: prompt
+        prompt
       })
       return response.data;
     } catch(err) {
@@ -51,7 +65,7 @@ export default function CreateNew() {
     }
   }
 
-  async function generateAudio({ result: { video_scenes } }) {
+  async function generateAudioScript({ result: { video_scenes } }) {
     const id = uuidv4();
     const script = video_scenes
     const text = await joinText(script)
@@ -87,7 +101,7 @@ export default function CreateNew() {
         {/* Duração */}
         <Button 
           className='mt-10 w-full'
-          onClick={onHandleCreateCick}
+          onClick={onHandleClickCreate}
         >Criar Short Video</Button>
         <LoadingCreate loading={loading} />
       </div>

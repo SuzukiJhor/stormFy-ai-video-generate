@@ -6,7 +6,10 @@ const urlPlayHT = process.env.NEXT_PUBLIC_PLAYHT_URL;
 export async function POST(req) {
   const { data } = await req.json();
   console.log('API - AUDIO', data);
-  
+  return NextResponse.json({
+        Resultado: "Áudio criado com sucesso",
+        url: 'https://wzcdsrkdftxalfcstjqd.supabase.co/storage/v1/object/public/audio//ef6cb6af-08fd-4e63-9ae4-79c3f9b99af4.mp3',
+      });
   const options = {
     method: 'POST',
     headers: {
@@ -23,37 +26,37 @@ export async function POST(req) {
     })
   };
   
-  try {
-    const response = await fetch(urlPlayHT, options);
-    if (!response.ok) {
-      throw new Error(`Erro ao obter áudio: ${response.statusText}`);
-    }
-    const audioData = await response.arrayBuffer();
-    const audioBuffer = Buffer.from(audioData);
+  // try {
+  //   const response = await fetch(urlPlayHT, options);
+  //   if (!response.ok) {
+  //     throw new Error(`Erro ao obter áudio: ${response.statusText}`);
+  //   }
+  //   const audioData = await response.arrayBuffer();
+  //   const audioBuffer = Buffer.from(audioData);
 
-    const fileName = `${data.id}.mp3`;
+  //   const fileName = `${data.id}.mp3`;
 
-    const { error: uploadError } = await supabase.storage
-      .from('audio')
-      .upload(fileName, audioBuffer, {
-        contentType: "audio/mpeg",
-        upsert: true,
-      });
+  //   const { error: uploadError } = await supabase.storage
+  //     .from('audio')
+  //     .upload(fileName, audioBuffer, {
+  //       contentType: "audio/mpeg",
+  //       upsert: true,
+  //     });
 
-    if (uploadError) {
-      throw new Error(`Erro ao fazer upload para o Supabase: ${uploadError.message}`);
-    }
+  //   if (uploadError) {
+  //     throw new Error(`Erro ao fazer upload para o Supabase: ${uploadError.message}`);
+  //   }
 
-    const { data: publicUrl } = supabase.storage
-      .from('audio')
-      .getPublicUrl(fileName);
+  //   const { data: publicUrl } = supabase.storage
+  //     .from('audio')
+  //     .getPublicUrl(fileName);
 
-    return NextResponse.json({
-      Resultado: "Áudio criado com sucesso",
-      url: publicUrl.publicUrl,
-    });
-  } catch (error) {
-    console.error('Erro ao gerar áudio:', error.message);
-    return NextResponse.json({ error: 'Erro ao gerar áudio' }, { status: 500 });
-  }
+  //   return NextResponse.json({
+  //     Resultado: "Áudio criado com sucesso",
+  //     url: publicUrl.publicUrl,
+  //   });
+  // } catch (error) {
+  //   console.error('Erro ao gerar áudio:', error.message);
+  //   return NextResponse.json({ error: 'Erro ao gerar áudio' }, { status: 500 });
+  // }
 }
