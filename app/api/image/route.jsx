@@ -16,13 +16,17 @@ const mockImagePayload =[
       "contextText": "Earth isn't the only planet; there are many others!"
     }
 ]
+const mockImageResponse =  [
+    "https://wzcdsrkdftxalfcstjqd.supabase.co/storage/v1/object/public/gallery/uploads/image-1738477911393-0.png",
+    "https://wzcdsrkdftxalfcstjqd.supabase.co/storage/v1/object/public/gallery/uploads/image-1738477913242-1.png"
+  ]
   
 export async function POST(req) {
     try {
         // const { data: { result } } = await req.json();
         const result = mockImagePayload;
         console.log('IMAGE API - MOCK  ', mockImagePayload);
-        // return NextResponse.json({ result: result });
+        return NextResponse.json({ urls: mockImageResponse });
 
         const width = 1024;
         const height = 1024;

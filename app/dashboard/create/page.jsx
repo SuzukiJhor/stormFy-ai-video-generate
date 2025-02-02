@@ -7,21 +7,12 @@ import SelectTopic from './_components/SelectTopic'
 import SelectStyle from './_components/SelectStyle';
 import LoadingCreate from './_components/LoadingCreate';
 import SelectDurations from './_components/SelectDurations';
-
-// const responseIaGoogle = {
-//   "video_scenes": [
-//     {
-//       "scene_number": 1,
-//       "duration": 3,
-//       "imagePrompt": "Um astronauta montando um unicórnio arco-íris, cinematográfico, dramático",
-//       "contextText": "The story begins with the discovery of a mysterious chest on a deserted beach."
-//     },
-//   ]
-// }
+import { useVideoDataContext } from '@/app/context/videoDataContext';
 
 export default function CreateNew() {
   const [ loading, setLoading ] = React.useState(false);
   const [formData, setFormData] = React.useState({});
+  const { videoData, setVideoData } = useVideoDataContext();
   const scriptVideoRef = React.useRef({});
   const audioURLRef = React.useRef({});
   const captionsRef = React.useRef({});
@@ -45,9 +36,9 @@ export default function CreateNew() {
 
     await defineCaptionScriptPost(audioURLRef.current);
 
-    const resultUrls = await defineImagePost(scriptVideoRef.current);
+    await defineImagePost(scriptVideoRef.current);
     setLoading(false);
-    console.log('result -- Urls', resultUrls);
+    console.log('result -- Urls', videoData);
   }
 
   async function defineAudioScriptPost(data) {
@@ -55,6 +46,10 @@ export default function CreateNew() {
       const response = await axios.post('/api/audio', {
         data
       })
+      setVideoData( prev => ({
+        ...prev,
+        'audioScript' : response.data?.url,
+      }))
       audioURLRef.current = response.data
       return;
     } catch(err) {
@@ -67,8 +62,12 @@ export default function CreateNew() {
       const response = await axios.post('/api/caption', {
         data
       })
+      setVideoData( prev => ({
+        ...prev,
+        'captions' : response.data,
+      }))
       captionsRef.current = response.data;
-      return response.data;
+      return;
     } catch(err) {
       console.error('defineCaptionScriptPost', err)
     }
@@ -79,6 +78,10 @@ export default function CreateNew() {
       const response = await axios.post('/api/video-script', {
         data: prompt
       })
+      setVideoData( prev => ({
+        ...prev,
+        'videoScript' : response.data,
+      }))
       scriptVideoRef.current = response.data;
       return response.data;
     } catch(err) {
@@ -91,6 +94,10 @@ export default function CreateNew() {
       const response = await axios.post('/api/image', {
         data: prompt
       })
+      setVideoData( prev => ({
+        ...prev,
+        'imageUrl' : response.data,
+      }))
       imagesURLRef.current = response.data;
       return response.data;
     } catch(err) {
@@ -125,23 +132,27 @@ export default function CreateNew() {
     `;
   }
 
+  React.useEffect(()=> {
+    console.log(videoData)
+  }, [videoData])
+
   return (
-    <div className='md:px-20'>
-      <h2 className='font-bold text-4xl text-primary text-center'> + Criar mais um</h2>
-      <div className='mt-10 shadow-md p-10'>
-        {/* Topico */}
-        <SelectTopic onUserSelect={onHandleInputChange}/>
-        {/* Estilo */}
-        <SelectStyle onUserSelect={onHandleInputChange}/>
-        {/* Duração */}
-        <SelectDurations onUserSelect={onHandleInputChange}/>
-        {/* Duração */}
-        <Button 
-          className='mt-10 w-full'
-          onClick={onHandleClickCreate}
-        >Criar Short Video</Button>
-        <LoadingCreate loading={loading} />
+      <div className='md:px-20'>
+        <h2 className='font-bold text-4xl text-primary text-center'> + Criar mais um</h2>
+        <div className='mt-10 shadow-md p-10'>
+          {/* Topico */}
+          <SelectTopic onUserSelect={onHandleInputChange} />
+          {/* Estilo */}
+          <SelectStyle onUserSelect={onHandleInputChange} />
+          {/* Duração */}
+          <SelectDurations onUserSelect={onHandleInputChange} />
+          {/* Duração */}
+          <Button
+            className='mt-10 w-full'
+            onClick={onHandleClickCreate}
+          >Criar Short Video</Button>
+          <LoadingCreate loading={loading} />
+        </div>
       </div>
-    </div>
   )
 }
