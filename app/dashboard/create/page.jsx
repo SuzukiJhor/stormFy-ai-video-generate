@@ -13,10 +13,6 @@ export default function CreateNew() {
   const [ loading, setLoading ] = React.useState(false);
   const [formData, setFormData] = React.useState({});
   const { videoData, setVideoData } = useVideoDataContext();
-  const scriptVideoRef = React.useRef({});
-  const audioURLRef = React.useRef({});
-  const captionsRef = React.useRef({});
-  const imagesURLRef = React.useRef({});
 
   const onHandleInputChange = (fieldName, fieldValue) => {
     setFormData( prev => ({
@@ -26,20 +22,26 @@ export default function CreateNew() {
   }
 
   const onHandleClickCreate = async () => {
-    const prompt = createPromptScript();
-    setLoading(true);
-    await defineVideoScriptPost(prompt);
-
-    const resultAudioScript = await createAudioScript(scriptVideoRef.current);
-
-    await defineAudioScriptPost(resultAudioScript);
-
-    await defineCaptionScriptPost(audioURLRef.current);
-
-    await defineImagePost(scriptVideoRef.current);
-    setLoading(false);
-    console.log('result -- Urls', videoData);
-  }
+    try {
+      setLoading(true);
+      const prompt = createPromptScript();
+  
+      const script = await defineVideoScriptPost(prompt);
+  
+      const [resultAudioScript] = await Promise.all([
+        createAudioScript(script),
+        defineImagePost(script),
+      ]);
+  
+      const urlAudio = await defineAudioScriptPost(resultAudioScript);
+      await defineCaptionScriptPost(urlAudio);
+      
+      setLoading(false);
+    } catch (error) {
+      console.error('Erro ao criar o vídeo:', error);
+      setLoading(false);
+    }
+  };
 
   async function defineAudioScriptPost(data) {
     try {
@@ -50,8 +52,7 @@ export default function CreateNew() {
         ...prev,
         'audioScript' : response.data?.url,
       }))
-      audioURLRef.current = response.data
-      return;
+      return response.data;
     } catch(err) {
       console.error('defineAudioScriptPost', err)
     }
@@ -64,10 +65,8 @@ export default function CreateNew() {
       })
       setVideoData( prev => ({
         ...prev,
-        'captions' : response.data,
+        'captions' : response.data?.result,
       }))
-      captionsRef.current = response.data;
-      return;
     } catch(err) {
       console.error('defineCaptionScriptPost', err)
     }
@@ -80,9 +79,8 @@ export default function CreateNew() {
       })
       setVideoData( prev => ({
         ...prev,
-        'videoScript' : response.data,
+        'videoScript' : response.data?.result,
       }))
-      scriptVideoRef.current = response.data;
       return response.data;
     } catch(err) {
       console.error('defineVideoScriptPost', err)
@@ -96,9 +94,8 @@ export default function CreateNew() {
       })
       setVideoData( prev => ({
         ...prev,
-        'imageUrl' : response.data,
+        'imageUrl' : response.data?.urls,
       }))
-      imagesURLRef.current = response.data;
       return response.data;
     } catch(err) {
       console.error('defineImagePost', err)
@@ -125,10 +122,14 @@ export default function CreateNew() {
   }
 
   function createPromptScript() {
+    const duration = formData.duration || 'default duration';
+    const topic = formData.topic || 'general topic';
+    const imageStyle = formData.ImageStyle || 'realistic';
+
     return `
-      Write a script to generate ${formData.duration} video on topic: ${formData.topic} 
-      along with AI image prompt in ${formData.ImageStyle} format for each scene and give 
-      me result in JSON format with imagePrompt and ContextText as field, No Plain Text
+      Write a script to generate ${duration} video on topic: ${topic} 
+      along with AI image prompt in ${imageStyle} format for each scene 
+      and give me result in JSON format with imagePrompt and ContextText as field, No Plain Text
     `;
   }
 
