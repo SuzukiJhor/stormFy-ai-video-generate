@@ -2,11 +2,12 @@
 
 #### ⚒️ Aplicação Gerador de video com IA. <br>
 #### 🪢 Clerk para Autenticação https://clerk.com/ <br>
-#### 🔦 PostGree ServerLess Neon https://neon.tech/ <br>
+#### 🔦 NEON PostGree ServerLess https://neon.tech/ <br>
 #### 🎡 Drizzle ORM https://orm.drizzle.team/ <br>
 #### 🌏 Supabase - Storage<br>
 #### ⚙️ Integração modelos de IA - Google IA - https://cloud.google.com/ai/generative-ai?hl=pt-br <br>
-#### ⚡icons -  lucide https://lucide.dev/
+#### 🛞⚡Assembly IA - captions https://www.assemblyai.com/app
+#### ⚡Lucide - icons https://lucide.dev/
 
 ![image](https://github.com/user-attachments/assets/d0f0ad86-c227-4d6b-9179-f0553744eff9)
 

@@ -1,16 +1,31 @@
 'use client'
 import React from 'react'
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import { Button } from '@/components/ui/button';
 import SelectTopic from './_components/SelectTopic'
 import SelectStyle from './_components/SelectStyle';
-import SelectDurations from './_components/SelectDurations';
-import { Button } from '@/components/ui/button';
-import axios from 'axios';
 import LoadingCreate from './_components/LoadingCreate';
-import { v4 as uuidv4 } from 'uuid';
+import SelectDurations from './_components/SelectDurations';
+
+// const responseIaGoogle = {
+//   "video_scenes": [
+//     {
+//       "scene_number": 1,
+//       "duration": 3,
+//       "imagePrompt": "Um astronauta montando um unicórnio arco-íris, cinematográfico, dramático",
+//       "contextText": "The story begins with the discovery of a mysterious chest on a deserted beach."
+//     },
+//   ]
+// }
 
 export default function CreateNew() {
   const [ loading, setLoading ] = React.useState(false);
-  const [ formData, setFormData ] = React.useState([]);
+  const [formData, setFormData] = React.useState({});
+  const scriptVideoRef = React.useRef({});
+  const audioURLRef = React.useRef({});
+  const captionsRef = React.useRef({});
+  const imagesURLRef = React.useRef({});
 
   const onHandleInputChange = (fieldName, fieldValue) => {
     setFormData( prev => ({
@@ -20,72 +35,94 @@ export default function CreateNew() {
   }
 
   const onHandleClickCreate = async () => {
-    const prompt = videoScript();
+    const prompt = createPromptScript();
     setLoading(true);
-    const script = await postVideoScriptRequest(prompt);
-    const urlPublicAudio = await postAudioScriptRequest(script);
-    const response = await postCaptionScriptRequest(urlPublicAudio);
-    // const result = await generateAudioScript(script);
-    // const response = await postAudioScriptRequest(result);
+    await defineVideoScriptPost(prompt);
+
+    const resultAudioScript = await createAudioScript(scriptVideoRef.current);
+
+    await defineAudioScriptPost(resultAudioScript);
+
+    await defineCaptionScriptPost(audioURLRef.current);
+
+    const resultUrls = await defineImagePost(scriptVideoRef.current);
     setLoading(false);
-    console.log('Resultado', response);
+    console.log('result -- Urls', resultUrls);
   }
 
-  async function postAudioScriptRequest(data) {
+  async function defineAudioScriptPost(data) {
     try {
       const response = await axios.post('/api/audio', {
         data
       })
-      return response.data;
+      audioURLRef.current = response.data
+      return;
     } catch(err) {
-      console.error('postAudioScriptRequest', err)
+      console.error('defineAudioScriptPost', err)
     }
   }
 
-  async function postCaptionScriptRequest(data) {
+  async function defineCaptionScriptPost(data) {
     try {
-      console.log('before postCaptionScriptRequest', data)
       const response = await axios.post('/api/caption', {
         data
       })
+      captionsRef.current = response.data;
       return response.data;
     } catch(err) {
-      console.error('postAudioScriptRequest', err)
+      console.error('defineCaptionScriptPost', err)
     }
   }
 
-  async function postVideoScriptRequest(prompt) {
+  async function defineVideoScriptPost(prompt) {
     try {
       const response = await axios.post('/api/video-script', {
-        prompt
+        data: prompt
       })
+      scriptVideoRef.current = response.data;
       return response.data;
     } catch(err) {
-      console.error('postVideoScriptRequest', err)
+      console.error('defineVideoScriptPost', err)
     }
   }
 
-  async function generateAudioScript({ result: { video_scenes } }) {
+  async function defineImagePost(prompt) {
+    try {
+      const response = await axios.post('/api/image', {
+        data: prompt
+      })
+      imagesURLRef.current = response.data;
+      return response.data;
+    } catch(err) {
+      console.error('defineImagePost', err)
+    }
+  }
+
+  async function createAudioScript(prompt) {
+    const { result } = prompt;
     const id = uuidv4();
-    const script = video_scenes
-    const text = await joinText(script)
+    const script = result
+    const text = joinText(script)
     const audio = {
       text, id
     }
     return audio;
   }
 
-  async function joinText(dataResult) {
+  function joinText(dataResult) {
     let script = '';
-    await dataResult.forEach(( item =>  {
+    dataResult.forEach(( item =>  {
       script = script + item.contextText + '';
     }))
     return script;
   }
 
-  function videoScript() {
-    const prompt = `Escreva um script para gerar um vídeo de ${formData.duration} sobre o tema: ${formData.topic}, juntamente com um prompt de imagem gerado por IA no formato ${formData.ImageStyle} para cada cena, e forneça o resultado no formato JSON com os campos imagePrompt e ContextText. Não inclua texto simples.`;
-    return prompt;
+  function createPromptScript() {
+    return `
+      Write a script to generate ${formData.duration} video on topic: ${formData.topic} 
+      along with AI image prompt in ${formData.ImageStyle} format for each scene and give 
+      me result in JSON format with imagePrompt and ContextText as field, No Plain Text
+    `;
   }
 
   return (
