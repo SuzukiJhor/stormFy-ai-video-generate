@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }) {
   return (
     <VideoDataProvider>
       <div>
-        <div className='hidden md:block h-screen bg-white fixed mt-[165px]'>
+        <div className='hidden md:block h-screen fixed mt-[6%]'>
           <SideNav />
         </div>
         <div>

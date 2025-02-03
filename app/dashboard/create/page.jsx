@@ -9,11 +9,17 @@ import SelectStyle from './_components/SelectStyle';
 import LoadingCreate from './_components/LoadingCreate';
 import SelectDurations from './_components/SelectDurations';
 import { useVideoDataContext } from '@/app/context/videoDataContext';
+import AlertDialogComponent from '../_components/AlertDialog';
+import { PlayerDialog } from '../_components/PlayerDialog';
 
 export default function CreateNew() {
   const [ loading, setLoading ] = React.useState(false);
-  const [formData, setFormData] = React.useState({});
+  const [ formData, setFormData ] = React.useState({});
   const { videoData, setVideoData } = useVideoDataContext();
+  const [ playVideo, setPlayVideo ] = React.useState(true);
+  const [ videoId, setVideoId ] = React.useState(1);
+  const [ error, setError ] = React.useState('');
+  const [ success, setSuccess ] = React.useState(false);
   const { user } = useUser()
 
   const onHandleInputChange = (fieldName, fieldValue) => {
@@ -51,11 +57,16 @@ export default function CreateNew() {
         data: videoData,
         createdBy: user?.primaryEmailAddress?.emailAddress,
       })
-      console.log(response.data)
-      return;
+      checkResponseVideoData(response);
     } catch(err) {
       console.error('defineAudioScriptPost', err)
     }
+  }
+
+  function checkResponseVideoData(response) {
+    if (response.data.error) 
+      return setError(response.data.error)
+    return setSuccess(true)
   }
 
   async function defineAudioScriptPost(data) {
@@ -148,25 +159,35 @@ export default function CreateNew() {
     `;
   }
 
-  React.useEffect(()=> {}, [videoData])
+  function handleCloseAlert() { 
+    setSuccess(false)
+    setError(false)
+  }
+
+  React.useEffect(()=> {}, [videoData, error, success])
 
   return (
-      <div className='md:px-20'>
-        <h2 className='font-bold text-4xl text-primary text-center'> + Criar mais um</h2>
-        <div className='mt-10 shadow-md p-10'>
-          {/* Topico */}
-          <SelectTopic onUserSelect={onHandleInputChange} />
-          {/* Estilo */}
-          <SelectStyle onUserSelect={onHandleInputChange} />
-          {/* Duração */}
-          <SelectDurations onUserSelect={onHandleInputChange} />
-          {/* Duração */}
-          <Button
-            className='mt-10 w-full'
-            onClick={onHandleClickCreate}
-          >Criar Short Video</Button>
-          <LoadingCreate loading={loading} />
-        </div>
+    <div className='md:px-20'>
+      <h2 className='font-bold text-4xl text-primary text-center'> + Criar mais um</h2>
+      <div className='mt-10 shadow-md p-10 border-2 border-emerald-700'>
+        {/* Topico */}
+        <SelectTopic onUserSelect={onHandleInputChange} />
+        {/* Estilo */}
+        <SelectStyle onUserSelect={onHandleInputChange} />
+        {/* Duração */}
+        <SelectDurations onUserSelect={onHandleInputChange} />
+        {/* Duração */}
+        <Button
+          className='mt-10 w-full hover:bg-neutral-400 hover:text-emerald-700'
+          onClick={onHandleClickCreate}
+        >Criar Short Video</Button>
+        <LoadingCreate loading={loading} />
+        {/* Alert Dialog */}
+        {success && <AlertDialogComponent text="Video gerado com sucesso!" open={success} onClose={handleCloseAlert} />}
+        {error && <AlertDialogComponent text={error} open={error} onClose={handleCloseAlert} />}
+        {/* Player Dialog */}
+        <PlayerDialog playerVideo={playVideo} videoData={videoData} />
       </div>
+    </div>
   )
 }

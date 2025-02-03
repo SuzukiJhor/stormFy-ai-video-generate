@@ -2,18 +2,31 @@ import React from 'react'
 import { Button } from "@/components/ui/button";
 import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image'
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
   return (
-    <div className='p-3 px-5 flex items-center justify-between shadow-md'>
-        <div className='flex gap-3 items-center'>
-            <Image src={'/login03.jpg'} alt='logo' width={30} height={30}/>
-            <h2 className='font-bold text-xl'>Videos IA</h2>
-        </div>
-        <div className='flex gap-3 items-center'>
-            <Button className='hover:bg-primary hover:text-white' variant="secondary">DashBoard</Button>
-            <UserButton/>
-        </div>
+    <div className='p-3 px-5 flex items-center justify-between shadow-md border-b-2 border-emerald-700'>
+      <div className='flex gap-3 items-center'>
+        <Image src={'/logo-StormFy.jpg'} alt='logo' width={70} height={70} />
+        <h2 className='font-bold text-xl'>StormFy IA</h2>
+      </div>
+      <div className='flex gap-3 items-center'>
+        <Button
+          className="px-6 py-3 text-lg tracking-widest font-semibold rounded-lg bg-primary transition-all duration-300 shadow-md hover:bg-neutral-300 hover:text-emerald-700"
+          onClick={() => router.push("/dashboard")}
+        >
+          Dashboard
+        </Button>
+        <UserButton
+          appearance={{
+            elements: {
+              avatarBox: "w-10 h-10 rounded-full shadow-md transition-all hover:bg-opacity-80",
+            },
+          }}
+        />
+      </div>
     </div>
   )
 }

@@ -40,7 +40,7 @@ export default function SelectTopic({onUserSelect}) {
 
         {selectedOption === 'Prompt Customizado' && 
             <Textarea 
-              className='mt-03' 
+              className='mt-03 border-emerald-700' 
               placeholder='Escreva seu Prompt Aqui'
               onChange={(e)=> onUserSelect('topic', e.target.value)}
             />

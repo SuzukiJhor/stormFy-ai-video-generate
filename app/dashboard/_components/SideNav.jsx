@@ -39,9 +39,9 @@ export default function SideNav() {
             {menuOptions.map((item, index) => {
                 return <Link href={item.path} key={index}>
                     <div className={`flex items-center gap-3 p-3 
-                        hover:bg-primary hover:text-white 
+                        hover:bg-black hover:text-white
                         rounded-md cursor-pointer
-                        ${path == item.path && 'bg-primary text-white'}
+                        ${path == item.path && 'bg-black text-white'}
                     `}>
                         <item.icon/>
                         <h2>{item.name}</h2>

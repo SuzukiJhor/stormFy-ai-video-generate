@@ -5,13 +5,13 @@ import Link from 'next/link'
 import EmptyState from './_components/EmptyState'
 
 export default function Dashboard() {
-  const [ videoList, setVideoList ] = React.useState([])
+  const [ videoList, setVideoList ] = React.useState([]);
   return (
     <div>
       <div className='flex justify-between items-center'>
-        <h2 className='font-bold text-2xl text-pri'>Dashboard</h2>
+        <h2 className='font-bold text-2xl'>Dashboard</h2>
         <Link href={'/dashboard/create'}>
-          <Button> + Criar Um</Button>
+          <Button className='hover:bg-neutral-300 hover:text-emerald-700'> + Criar Um</Button>
         </Link>
       </div>
       {/*Empty State*/}
