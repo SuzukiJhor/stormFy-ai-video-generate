@@ -2,6 +2,7 @@
 import React from 'react'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button';
 import SelectTopic from './_components/SelectTopic'
 import SelectStyle from './_components/SelectStyle';
@@ -13,6 +14,7 @@ export default function CreateNew() {
   const [ loading, setLoading ] = React.useState(false);
   const [formData, setFormData] = React.useState({});
   const { videoData, setVideoData } = useVideoDataContext();
+  const { user } = useUser()
 
   const onHandleInputChange = (fieldName, fieldValue) => {
     setFormData( prev => ({
@@ -27,14 +29,14 @@ export default function CreateNew() {
       const prompt = createPromptScript();
   
       const script = await defineVideoScriptPost(prompt);
+      const resultAudioScript =  createAudioScript(script);
   
-      const [resultAudioScript] = await Promise.all([
-        createAudioScript(script),
-        defineImagePost(script),
-      ]);
+     await defineImagePost(script);
   
       const urlAudio = await defineAudioScriptPost(resultAudioScript);
       await defineCaptionScriptPost(urlAudio);
+
+      await defineVideoDataPost();
       
       setLoading(false);
     } catch (error) {
@@ -42,6 +44,19 @@ export default function CreateNew() {
       setLoading(false);
     }
   };
+
+  async function defineVideoDataPost() {
+    try {
+      const response = await axios.post('/api/video-data', {
+        data: videoData,
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+      })
+      console.log(response.data)
+      return;
+    } catch(err) {
+      console.error('defineAudioScriptPost', err)
+    }
+  }
 
   async function defineAudioScriptPost(data) {
     try {
@@ -102,7 +117,7 @@ export default function CreateNew() {
     }
   }
 
-  async function createAudioScript(prompt) {
+  function createAudioScript(prompt) {
     const { result } = prompt;
     const id = uuidv4();
     const script = result
@@ -133,9 +148,7 @@ export default function CreateNew() {
     `;
   }
 
-  React.useEffect(()=> {
-    console.log(videoData)
-  }, [videoData])
+  React.useEffect(()=> {}, [videoData])
 
   return (
       <div className='md:px-20'>
