@@ -16,7 +16,7 @@ export default function CreateNew() {
   const [ loading, setLoading ] = React.useState(false);
   const [ formData, setFormData ] = React.useState({});
   const { videoData, setVideoData } = useVideoDataContext();
-  const [ playVideo, setPlayVideo ] = React.useState(true);
+  const [ playVideo, setPlayVideo ] = React.useState(false);
   const [ videoId, setVideoId ] = React.useState(1);
   const [ error, setError ] = React.useState('');
   const [ success, setSuccess ] = React.useState(false);
@@ -165,6 +165,10 @@ export default function CreateNew() {
   }
 
   React.useEffect(()=> {}, [videoData, error, success])
+  
+  React.useEffect(()=> {
+    if (success) setPlayVideo(true);
+  }, [videoData, success])
 
   return (
     <div className='md:px-20'>

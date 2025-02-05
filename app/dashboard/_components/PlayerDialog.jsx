@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/dialog"
 import { Player } from "@remotion/player";
 import RemotionVideo from './RemotionVideo';
+import { Button } from '@/components/ui/button';
 
 export function PlayerDialog({ playerVideo, videoData = null }) {
+    const [ durationFrame, setDurationFrame ] = React.useState(100);
     const [ openDialog, setOpenDialog ] = React.useState(true);
     const [ videoInfo, setInfoData ] = React.useState(videoData);
     React.useEffect(()=>{setOpenDialog(playerVideo)}, [playerVideo]);
@@ -25,11 +27,20 @@ export function PlayerDialog({ playerVideo, videoData = null }) {
                     <DialogDescription>
                         <Player
                             component={RemotionVideo}
-                            durationInFrames={120}
+                            durationInFrames={Number(durationFrame.toFixed(0))}
                             compositionWidth={300}
                             compositionHeight={450}
                             fps={30}
+                            controls={true}
+                            inputProps={{
+                                ...videoData,
+                                setDurationFrame: (valueFrame) => setDurationFrame(valueFrame)
+                            }}
                         />
+                        <div className='flex gap-10 p-2 justify-center'>
+                            <Button variant='destructive'>Cancel</Button>
+                            <Button>Exportar</Button>
+                        </div>
                     </DialogDescription>
                 </DialogHeader>
 
