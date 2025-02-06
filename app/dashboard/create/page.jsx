@@ -13,120 +13,64 @@ import AlertDialogComponent from '../_components/AlertDialog';
 import { PlayerDialog } from '../_components/PlayerDialog';
 
 export default function CreateNew() {
-  const [ loading, setLoading ] = React.useState(false);
-  const [ formData, setFormData ] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+  const [formData, setFormData] = React.useState({});
   const { videoData, setVideoData } = useVideoDataContext();
-  const [ playVideo, setPlayVideo ] = React.useState(false);
-  const [ videoId, setVideoId ] = React.useState(1);
-  const [ error, setError ] = React.useState('');
-  const [ success, setSuccess ] = React.useState(false);
+  const [playVideo, setPlayVideo] = React.useState(false);
+  const [videoId, setVideoId] = React.useState(1);
+  const [error, setError] = React.useState('');
+  const [success, setSuccess] = React.useState(false);
   const { user } = useUser()
 
-  const onHandleInputChange = (fieldName, fieldValue) => {
-    setFormData( prev => ({
-      ...prev,
-      [fieldName] : fieldValue
-    }))
+  const onHandleInputChange = React.useCallback((fieldName, fieldValue) => {
+    setFormData(prev => ({ ...prev, [fieldName]: fieldValue }));
+  }, [])
+
+  const registerData = async (url, data) => {
+    try {
+      const response = await axios.post(url, { data });
+      return response.data;
+    } catch (error) {
+      console.error(`Erro ao chamar ${url}:`, error);
+      return null;
+    }
   }
 
-  const onHandleClickCreate = async () => {
+  const onHandleClickCreate = React.useCallback(async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       const prompt = createPromptScript();
-  
-      const script = await defineVideoScriptPost(prompt);
-      const resultAudioScript =  createAudioScript(script);
-  
-     await defineImagePost(script);
-  
-      const urlAudio = await defineAudioScriptPost(resultAudioScript);
-      await defineCaptionScriptPost(urlAudio);
+      const script = await registerData('/api/video-script', prompt);
+      if (!script) throw new Error('Erro ao criar script do vídeo');
 
-      await defineVideoDataPost();
-      
-      setLoading(false);
-    } catch (error) {
-      console.error('Erro ao criar o vídeo:', error);
-      setLoading(false);
-    }
-  };
+      const audioScript = createAudioScript(script);
 
-  async function defineVideoDataPost() {
-    try {
-      const response = await axios.post('/api/video-data', {
+      const audioResponse = await registerData('/api/audio', audioScript);
+      const imageResponse = await registerData('/api/image', script);
+      const captionResponse = await registerData('/api/caption', audioResponse);
+
+      if (!audioResponse || !imageResponse || !captionResponse) throw new Error('Erro ao gerar recursos do vídeo');
+
+      setVideoData(prev => ({
+        ...prev,
+        videoScript: script?.result || [],
+        audioScript: audioResponse?.url || '',
+        imageUrl: imageResponse?.urls || [],
+        captions: captionResponse?.result || [],
+      }));
+
+      await registerData('/api/video-data', {
         data: videoData,
         createdBy: user?.primaryEmailAddress?.emailAddress,
-      })
-      checkResponseVideoData(response);
-    } catch(err) {
-      console.error('defineAudioScriptPost', err)
+      });
+      setSuccess(true);
+    } catch (error) {
+      setError(error.message || 'Erro ao criar vídeo');
+      console.error('Erro ao criar o vídeo:', error);
+    } finally {
+      setLoading(false);
     }
-  }
-
-  function checkResponseVideoData(response) {
-    if (response.data.error) 
-      return setError(response.data.error)
-    return setSuccess(true)
-  }
-
-  async function defineAudioScriptPost(data) {
-    try {
-      const response = await axios.post('/api/audio', {
-        data
-      })
-      setVideoData( prev => ({
-        ...prev,
-        'audioScript' : response.data?.url,
-      }))
-      return response.data;
-    } catch(err) {
-      console.error('defineAudioScriptPost', err)
-    }
-  }
-
-  async function defineCaptionScriptPost(data) {
-    try {
-      const response = await axios.post('/api/caption', {
-        data
-      })
-      setVideoData( prev => ({
-        ...prev,
-        'captions' : response.data?.result,
-      }))
-    } catch(err) {
-      console.error('defineCaptionScriptPost', err)
-    }
-  }
-
-  async function defineVideoScriptPost(prompt) {
-    try {
-      const response = await axios.post('/api/video-script', {
-        data: prompt
-      })
-      setVideoData( prev => ({
-        ...prev,
-        'videoScript' : response.data?.result,
-      }))
-      return response.data;
-    } catch(err) {
-      console.error('defineVideoScriptPost', err)
-    }
-  }
-
-  async function defineImagePost(prompt) {
-    try {
-      const response = await axios.post('/api/image', {
-        data: prompt
-      })
-      setVideoData( prev => ({
-        ...prev,
-        'imageUrl' : response.data?.urls,
-      }))
-      return response.data;
-    } catch(err) {
-      console.error('defineImagePost', err)
-    }
-  }
+  }, [videoData, setVideoData, user]);
 
   function createAudioScript(prompt) {
     const { result } = prompt;
@@ -141,7 +85,7 @@ export default function CreateNew() {
 
   function joinText(dataResult) {
     let script = '';
-    dataResult.forEach(( item =>  {
+    dataResult.forEach((item => {
       script = script + item.contextText + '';
     }))
     return script;
@@ -159,16 +103,14 @@ export default function CreateNew() {
     `;
   }
 
-  function handleCloseAlert() { 
+  function handleCloseAlert() {
     setSuccess(false)
     setError(false)
   }
 
-  React.useEffect(()=> {}, [videoData, error, success])
-  
-  React.useEffect(()=> {
+  React.useEffect(() => {
     if (success) setPlayVideo(true);
-  }, [videoData, success])
+  }, [videoData, success, error])
 
   return (
     <div className='md:px-20'>
@@ -187,7 +129,6 @@ export default function CreateNew() {
         >Criar Short Video</Button>
         <LoadingCreate loading={loading} />
         {/* Alert Dialog */}
-        {success && <AlertDialogComponent text="Video gerado com sucesso!" open={success} onClose={handleCloseAlert} />}
         {error && <AlertDialogComponent text={error} open={error} onClose={handleCloseAlert} />}
         {/* Player Dialog */}
         <PlayerDialog playerVideo={playVideo} videoData={videoData} />

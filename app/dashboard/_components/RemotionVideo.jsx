@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { AbsoluteFill, Audio, Img, interpolate, Sequence, useCurrentFrame, useVideoConfig } from 'remotion'
 
@@ -14,7 +15,7 @@ export default function RemotionVideo({ audioScript, captions, imageUrl, videoSc
     return currentCaption ? currentCaption?.word : '';
   }
   return (
-    <AbsoluteFill key={captions.length}>
+    <AbsoluteFill>
       {imageUrl?.map((item, index) => {
         const startTime = (index * defineDurationFrame()) / imageUrl?.length;
         const duration = defineDurationFrame();
@@ -36,7 +37,7 @@ export default function RemotionVideo({ audioScript, captions, imageUrl, videoSc
                   transform: `scale(${scale(index)})`
                 }}
               />
-              <AbsoluteFill className='text-white flex font-bold 
+              <AbsoluteFill key={index} className='text-white flex font-bold 
                 justify-start items-center
               '>
                 <h2 className='text-2xl'>{defineCurrentCaptions()}</h2>

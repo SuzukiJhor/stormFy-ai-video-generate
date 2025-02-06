@@ -20,7 +20,7 @@ export function PlayerDialog({ playerVideo, videoData = null }) {
     React.useEffect(()=>{setOpenDialog(playerVideo)}, [playerVideo]);
 
     return (
-        <Dialog open={openDialog}>
+        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogContent className="sm:max-w-[425px] flex flex-col items-center border-4 border-emerald-700">
                 <DialogHeader>
                     <DialogTitle className='text-3xl font-bold my-5'>Seu video esta pronto</DialogTitle>

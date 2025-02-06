@@ -3,22 +3,51 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import EmptyState from './_components/EmptyState'
+import axios from 'axios';
+import { useUser } from '@clerk/nextjs'
+import VideoList from './_components/VideoList'
 
 export default function Dashboard() {
-  const [ videoList, setVideoList ] = React.useState([]);
+  const { user } = useUser();
+  const userEmail = user?.primaryEmailAddress?.emailAddress || '';
+  const [videoList, setVideoList] = React.useState([]);
+
+  async function fetchVideoDataByUser() {
+    if (!userEmail) return;
+    if (videoList.length !== 0) return;
+    try {
+      const response = await axios.get('/api/video-data', {
+        headers: {
+          'User-Email': userEmail
+        }
+      });
+      const { data } = response;
+      setVideoList(Array.isArray(data) ? data : [data]);
+    } catch (err) {
+      console.error('Erro ao buscar vídeos:', err);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchVideoDataByUser()
+  }, [fetchVideoDataByUser])
+
   return (
     <div>
       <div className='flex justify-between items-center'>
-        <h2 className='font-bold text-2xl'>Dashboard</h2>
+        <h2 className='font-bold text-2xl text-emerald-700'>Dashboard</h2>
         <Link href={'/dashboard/create'}>
           <Button className='hover:bg-neutral-300 hover:text-emerald-700'> + Criar Um</Button>
         </Link>
       </div>
       {/*Empty State*/}
-      {videoList?.length === 0 && 
+      {videoList.length === 0 &&
         <div>
-          <EmptyState/>
-        </div>}
-      </div>
+          <EmptyState />
+        </div>
+      }
+      {/*List of video*/}
+      <VideoList videoList={videoList} />
+    </div>
   )
 }
