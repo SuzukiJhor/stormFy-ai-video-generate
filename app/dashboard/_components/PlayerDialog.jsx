@@ -12,15 +12,23 @@ import {
 import { Player } from "@remotion/player";
 import RemotionVideo from './RemotionVideo';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export function PlayerDialog({ playerVideo, videoData = null }) {
-    const [ durationFrame, setDurationFrame ] = React.useState(100);
-    const [ openDialog, setOpenDialog ] = React.useState(true);
-    const [ videoInfo, setInfoData ] = React.useState(videoData);
-    React.useEffect(()=>{setOpenDialog(playerVideo)}, [playerVideo]);
+    const [durationFrame, setDurationFrame] = React.useState(100);
+    const [openDialog, setOpenDialog] = React.useState(false);
+    const [videoInfo, setInfoData] = React.useState(videoData);
+    const router = useRouter();
+
+    function handleDialog() {
+        setOpenDialog(false) 
+        router.replace('/dashboard')
+    }
+
+    React.useEffect(() => { setOpenDialog(playerVideo); console.log(playerVideo) }, [playerVideo, setOpenDialog]);
 
     return (
-        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <Dialog open={openDialog} onOpenChange={handleDialog}>
             <DialogContent className="sm:max-w-[425px] flex flex-col items-center border-4 border-emerald-700">
                 <DialogHeader>
                     <DialogTitle className='text-3xl font-bold my-5'>Seu video esta pronto</DialogTitle>
@@ -38,7 +46,7 @@ export function PlayerDialog({ playerVideo, videoData = null }) {
                             }}
                         />
                         <div className='flex gap-10 p-2 justify-center'>
-                            <Button variant='destructive'>Cancel</Button>
+                            <Button variant='destructive' onClick={handleDialog}>Cancel</Button>
                             <Button>Exportar</Button>
                         </div>
                     </DialogDescription>

@@ -16,7 +16,7 @@ export default function VideoList({ videoList }) {
       {videoList?.map((video, index) => (
         <div
           key={index}
-          onClick={()=> {SetdataInfoVideo(video)}}
+          onClick={() => { SetdataInfoVideo(video) }}
           className='cursor-pointer hover:scale-105 transition-all'
         >
           <Thumbnail
@@ -31,7 +31,7 @@ export default function VideoList({ videoList }) {
             }}
             inputProps={{
               ...video,
-              setDurationFrame: (v) => console.log(v)
+              setDurationFrame: (v) => { }
             }}
           />
         </div>
