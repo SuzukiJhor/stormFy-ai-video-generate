@@ -14,18 +14,20 @@ import RemotionVideo from './RemotionVideo';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 
-export function PlayerDialog({ playerVideo, videoData = null }) {
+export function PlayerDialog({ playerVideo, videoData = null, setPlayerVideo = null }) {
     const [durationFrame, setDurationFrame] = React.useState(100);
     const [openDialog, setOpenDialog] = React.useState(false);
     const [videoInfo, setInfoData] = React.useState(videoData);
     const router = useRouter();
 
     function handleDialog() {
-        setOpenDialog(false) 
+        setOpenDialog(false)
+        if (setPlayerVideo)
+            setPlayerVideo((prevState) => !prevState);
         router.replace('/dashboard')
     }
 
-    React.useEffect(() => { setOpenDialog(playerVideo); console.log(playerVideo) }, [playerVideo, setOpenDialog]);
+    React.useEffect(() => { setOpenDialog(playerVideo) }, [playerVideo, setOpenDialog]);
 
     return (
         <Dialog open={openDialog} onOpenChange={handleDialog}>
@@ -46,8 +48,8 @@ export function PlayerDialog({ playerVideo, videoData = null }) {
                             }}
                         />
                         <div className='flex gap-10 p-2 justify-center'>
-                            <Button variant='destructive' onClick={handleDialog}>Cancel</Button>
-                            <Button>Exportar</Button>
+                            <Button onClick={handleDialog}>Dashboard</Button>
+                            {/* <Button>Exportar</Button> */}
                         </div>
                     </DialogDescription>
                 </DialogHeader>

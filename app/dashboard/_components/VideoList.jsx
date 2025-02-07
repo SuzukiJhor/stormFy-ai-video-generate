@@ -7,16 +7,17 @@ export default function VideoList({ videoList }) {
   const [openPlayDialog, setOpenPlayDialog] = React.useState(false);
   const [videoInfo, setVideoinfo] = React.useState();
 
-  function SetdataInfoVideo(video) {
+  const SetdataInfoVideo = React.useCallback((video) => {
     setVideoinfo(video)
-    setOpenPlayDialog(true)
-  }
+    setOpenPlayDialog((prevState) => !prevState);
+  }, [setVideoinfo, setOpenPlayDialog])
+
   return (
     <div className='mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
       {videoList?.map((video, index) => (
         <div
           key={index}
-          onClick={() => { SetdataInfoVideo(video) }}
+          onClick={() => SetdataInfoVideo(video)}
           className='cursor-pointer hover:scale-105 transition-all'
         >
           <Thumbnail
@@ -36,7 +37,7 @@ export default function VideoList({ videoList }) {
           />
         </div>
       ))}
-      <PlayerDialog playerVideo={openPlayDialog} videoData={videoInfo} />
+      <PlayerDialog playerVideo={openPlayDialog} videoData={videoInfo} setPlayerVideo={setOpenPlayDialog} />
     </div>
   )
 }
