@@ -17,7 +17,6 @@ export default function CreateNew() {
   const [formData, setFormData] = React.useState({});
   const { videoData, setVideoData } = useVideoDataContext();
   const [playVideo, setPlayVideo] = React.useState(false);
-  const [videoId, setVideoId] = React.useState(1);
   const [error, setError] = React.useState('');
   const [success, setSuccess] = React.useState(false);
   const { user } = useUser()

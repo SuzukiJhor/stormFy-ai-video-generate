@@ -23,10 +23,10 @@ const mockImageResponse =  [
   
 export async function POST(req) {
     try {
-        // const { data: { result } } = await req.json();
-        const result = mockImagePayload;
+        const { data: { result } } = await req.json();
+        // const result = mockImagePayload;
         console.log('IMAGE API - MOCK  ', mockImagePayload);
-        return NextResponse.json({ urls: mockImageResponse });
+        // return NextResponse.json({ urls: mockImageResponse });
 
         const width = 1024;
         const height = 1024;

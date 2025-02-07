@@ -79,7 +79,7 @@ const transcriptionData = [
 export async function POST(req) {
     try {
         const { data: { url, } } = await req.json();
-        return NextResponse.json({ 'result': transcriptionData })
+        // return NextResponse.json({ 'result': transcriptionData })
 
         const client = new AssemblyAI({
             apiKey: process.env.CAPTION_ASSEMBLY_AI_API_KEY
@@ -88,7 +88,6 @@ export async function POST(req) {
             audio_url: url
         }
         const transcript = await client.transcripts.transcribe(data)
-        console.log('Response API - Caption', transcript);
         return NextResponse.json({ 'result': transcript.words })
     } catch (e) {
         return NextResponse.json({ 'Error': e })

@@ -133,7 +133,7 @@ const responseGet = {
 export async function POST(req) {
     const { data, createdBy } = await req.json();
     // return NextResponse.json({ error: "O campo 'data' está vazio." }, { status: 200 });
-    return NextResponse.json({ result: "data" });
+    // return NextResponse.json({ result: "data" });
     if (!data || Object.keys(data).length === 0)
         return NextResponse.json({ error: "O campo 'data' está vazio." }, { status: 400 });
 
@@ -144,7 +144,6 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-    console.log('API _ GEEEEEEEEEEEEEEEEEEET')
     try {
         const email = req.headers.get("User-Email");
         return NextResponse.json(responseGet, { status: 200 });

@@ -51,9 +51,9 @@ const videoScenes = {
 export async function POST(req) {
     try {
         const { data } = await req.json();
-        // const result = await chatSession.sendMessage(data);
-        return NextResponse.json({'result': videoScenes.video_scenes});
-        // return NextResponse.json({'result':JSON.parse(result.response.text())});
+        const result = await chatSession.sendMessage(data);
+        // return NextResponse.json({'result': videoScenes.video_scenes});
+        return NextResponse.json({'result':JSON.parse(result.response.text())});
     } catch(e) {
         return NextResponse.json({'Error': e})
     }

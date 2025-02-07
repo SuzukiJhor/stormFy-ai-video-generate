@@ -28,9 +28,11 @@ export default function Dashboard() {
     }
   }
 
+
+
   React.useEffect(() => {
     fetchVideoDataByUser()
-  }, [fetchVideoDataByUser])
+  }, [fetchVideoDataByUser, videoList, setVideoList])
 
   return (
     <div>
@@ -47,7 +49,10 @@ export default function Dashboard() {
         </div>
       }
       {/*List of video*/}
-      <VideoList videoList={videoList} />
+      {videoList.length !== 0 &&
+        <VideoList videoList={videoList} />
+      }
+      
     </div>
   )
 }

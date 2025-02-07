@@ -3,17 +3,25 @@ import React from 'react'
 import { AbsoluteFill, Audio, Img, interpolate, Sequence, useCurrentFrame, useVideoConfig } from 'remotion'
 
 export default function RemotionVideo({ audioScript, captions, imageUrl, videoScript, setDurationFrame }) {
+  console.log('audioScript', audioScript)
+  console.log('captions', captions)
+  console.log('imageUrl', imageUrl)
+  console.log('setDurationFrame', setDurationFrame)
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame(); // 25
+
   const defineDurationFrame = () => {
     setDurationFrame(captions[captions?.length - 1]?.end / 1000 * fps)
     return captions[captions?.length - 1]?.end / 1000 * fps
   }
-  const defineCurrentCaptions = () => {
-    const currentTime = frame / 30 * 1000 //convert fram to milesseconds
+
+  const defineCurrentCaptions = React.useCallback(() => {
+    const currentTime = (frame / fps) * 1000; // Convert frame para milissegundos
     const currentCaption = captions.find((item) => currentTime >= item.start && currentTime <= item.end)
     return currentCaption ? currentCaption?.word : '';
-  }
+  }, [captions, fps]);
+
+
   return (
     <AbsoluteFill>
       {imageUrl?.map((item, index) => {
@@ -39,7 +47,7 @@ export default function RemotionVideo({ audioScript, captions, imageUrl, videoSc
               }}
             />
             <AbsoluteFill key={`caption-${index}`} className="text-white flex font-bold justify-start items-center">
-              <h2 className="text-2xl">{defineCurrentCaptions()}</h2>
+              <h2 className="text-2xl">{defineCurrentCaptions()}</h2> 
             </AbsoluteFill>
           </Sequence>
         );
