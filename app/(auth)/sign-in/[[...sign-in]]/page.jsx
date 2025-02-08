@@ -6,7 +6,7 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-2">
         <div>
             <Image 
-                src={'/login03.jpg'} 
+                src={'/login02.jpg'} 
                 alt='login' 
                 width={500} 
                 height={500}

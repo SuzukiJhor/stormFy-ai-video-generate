@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "StormFy AI Videos",
   description: "Crie videos com IA",
+  icons: "/logo.ico",
 };
 
 export default function RootLayout({ children }) {
