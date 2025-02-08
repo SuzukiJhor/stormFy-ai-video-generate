@@ -33,7 +33,7 @@ export default function SelectStyle({onUserSelect}) {
         '>
             {styleOptions.map((item, index) => (
                 <div key={index} className={`relative hover:scale-105 transition-all cursor-pointer
-                    ${selectedOption == item.name && 'border-2 border-black scale-110'}    
+                    ${selectedOption == item.name && 'border-4 border-emerald-700 scale-110'}    
                 `}>
                     <Image 
                         alt={item.description}

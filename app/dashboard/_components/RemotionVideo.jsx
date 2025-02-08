@@ -2,11 +2,7 @@
 import React from 'react'
 import { AbsoluteFill, Audio, Img, interpolate, Sequence, useCurrentFrame, useVideoConfig } from 'remotion'
 
-export default function RemotionVideo({ audioScript, captions, imageUrl, videoScript, setDurationFrame }) {
-  console.log('audioScript', audioScript)
-  console.log('captions', captions)
-  console.log('imageUrl', imageUrl)
-  console.log('setDurationFrame', setDurationFrame)
+export default function RemotionVideo({ audioScript, captions, imageUrl, videoScript, setDurationFrame }) {  
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame(); // 25
 
@@ -20,7 +16,6 @@ export default function RemotionVideo({ audioScript, captions, imageUrl, videoSc
     const currentCaption = captions.find((item) => currentTime >= item.start && currentTime <= item.end)
     return currentCaption ? currentCaption?.word : '';
   }, [captions, fps]);
-
 
   return (
     <AbsoluteFill>
@@ -52,7 +47,7 @@ export default function RemotionVideo({ audioScript, captions, imageUrl, videoSc
           </Sequence>
         );
       })}
-      <Audio src={audioScript} />
+      {audioScript && <Audio src={audioScript} from={0} />}
     </AbsoluteFill>
   )
 }

@@ -45,7 +45,7 @@ export default function CreateNew() {
       const audioScript = createAudioScript(script);
 
       const audioResponse = await registerData('/api/audio', audioScript);
-      const imageResponse = await registerData('/api/image', script);
+      const imageResponse = await registerData('/api/image', script.result);
       const captionResponse = await registerData('/api/caption', audioResponse);
 
       if (!audioResponse || !imageResponse || !captionResponse) throw new Error('Erro ao gerar recursos do vídeo');
@@ -59,7 +59,7 @@ export default function CreateNew() {
       }));
 
       await registerData('/api/video-data', {
-        data: videoData,
+        videoData,
         createdBy: user?.primaryEmailAddress?.emailAddress,
       });
       setSuccess(true);
@@ -83,8 +83,9 @@ export default function CreateNew() {
   }
 
   function joinText(dataResult) {
+    if (!dataResult.video_scenes) return;
     let script = '';
-    dataResult.forEach((item => {
+    dataResult.video_scenes.forEach((item => {
       script = script + item.contextText + '';
     }))
     return script;

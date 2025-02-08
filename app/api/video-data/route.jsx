@@ -128,29 +128,27 @@ const responseGet = {
         }
     ]
 }
-  
 
 export async function POST(req) {
-    const { data, createdBy } = await req.json();
-    // return NextResponse.json({ error: "O campo 'data' está vazio." }, { status: 200 });
+    //MOCK
     // return NextResponse.json({ result: "data" });
+    const { data } = await req.json();
+    const { videoData, createdBy } = data;
     if (!data || Object.keys(data).length === 0)
         return NextResponse.json({ error: "O campo 'data' está vazio." }, { status: 400 });
 
-    console.log(data, createdBy);
-    await insertVideoData(data, createdBy);
-
+    await insertVideoData(videoData, createdBy);
     return NextResponse.json({ result: "data" });
 }
 
 export async function GET(req) {
     try {
         const email = req.headers.get("User-Email");
-        return NextResponse.json(responseGet, { status: 200 });
-        if (!email) 
+        //Mock
+        // return NextResponse.json(responseGet, { status: 200 });
+        if (!email)
             return NextResponse.json({ error: "Email não fornecido." }, { status: 400 });
         const response = await db.select().from(VideoData).where(eq(VideoData.createdBy, email));
-        console.log('API - GET', response);
         return NextResponse.json(response, { status: 200 });
     } catch (err) {
         console.error('Erro ao buscar vídeos:', err);
@@ -158,12 +156,12 @@ export async function GET(req) {
     }
 }
 
-async function insertVideoData(data, createdBy) {
+async function insertVideoData(videoInfo, createdBy) {
     return await db.insert(VideoData).values({
-        script: data.videoScript,
-        audioFileUrl: data.audioScript,
-        captions: data.captions,
-        imageList: data.imageUrl,
+        script: videoInfo.videoScript.video_scenes,
+        audioFileUrl: videoInfo.audioScript,
+        captions: videoInfo.captions,
+        imageList: videoInfo.imageUrl,
         createdBy: createdBy,
     })
 }

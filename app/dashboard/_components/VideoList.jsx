@@ -4,7 +4,6 @@ import RemotionVideo from './RemotionVideo';
 import { PlayerDialog } from './PlayerDialog';
 
 export default function VideoList({ videoList }) {
-  console.log(videoList)
   const [openPlayDialog, setOpenPlayDialog] = React.useState(false);
   const [videoInfo, setVideoinfo] = React.useState();
 
@@ -32,11 +31,10 @@ export default function VideoList({ videoList }) {
               borderRadius: 15
             }}
             inputProps={{
-              // audioScript: video.audioFileUrl,  // Passando a prop corretamente
-              // captions: video.captions,
-              // imageUrl: video.imageList,
-              // videoScript: video.script,
-              ...video,
+              audioScript: video.audioFileUrl,
+              captions: video.captions,
+              imageUrl: video.imageList,
+              videoScript: video.script,
               setDurationFrame: (v) => {}
             }}
           />

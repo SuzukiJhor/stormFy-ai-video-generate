@@ -79,7 +79,8 @@ const transcriptionData = [
 export async function POST(req) {
     try {
         const { data: { url, } } = await req.json();
-        // return NextResponse.json({ 'result': transcriptionData })
+        // MOCK
+        // return NextResponse.json({ 'result': transcriptionData }) 
 
         const client = new AssemblyAI({
             apiKey: process.env.CAPTION_ASSEMBLY_AI_API_KEY
