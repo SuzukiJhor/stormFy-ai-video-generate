@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
+import Dashboard from "./dashboard/page";
 
 export default function Home() {
   return (
     <div>
-      <Button variant="ghost">StormFy AI Video Generator</Button>
-      <UserButton/>
+      <Dashboard />
     </div>
   );
 }

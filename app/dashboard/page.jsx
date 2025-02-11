@@ -28,8 +28,6 @@ export default function Dashboard() {
     }
   }
 
-
-
   React.useEffect(() => {
     fetchVideoDataByUser()
   }, [fetchVideoDataByUser, videoList, setVideoList])

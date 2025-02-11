@@ -12,12 +12,12 @@ export default function SideNav() {
             path:'/dashboard',
             icon: PanelBottom
         },
-        {
-            id: 2,
-            name: 'Atualizar',
-            path:'/update',
-            icon: Gavel
-        },
+        // {
+        //     id: 2,
+        //     name: 'Atualizar',
+        //     path:'/update',
+        //     icon: Gavel
+        // },
         {
             id: 3,
             name: 'Criar',
@@ -27,7 +27,7 @@ export default function SideNav() {
         {
             id: 4,
             name: 'Conta',
-            path:'/account',
+            path:'/dashboard/account',
             icon: UserRoundCog
         },
     ]

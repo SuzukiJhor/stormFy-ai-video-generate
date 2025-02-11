@@ -16,9 +16,9 @@ export default function Page() {
       </div>
 
       {/* Lado direito com o formulário */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-6 bg-gray-100">
-        <div className="w-full max-w-md p-6 bg-white shadow-xl rounded-lg">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-6 bg-gradient-to-br from-blue-500 to-purple-600">
+        <div className="w-full max-w-md p-6 bg-gradient-to-br from-blue-500 to-purple-600 shadow-xl rounded-lg">
+          <h2 className="text-3xl font-bold text-center text-white mb-6">
             Bem-vindo!
           </h2>
           <SignIn />
