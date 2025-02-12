@@ -12,10 +12,10 @@ export default function SelectDurations({onUserSelect}) {
 
   return (
     <div className='mt-7'>
-        <h2 className='font-bold text-2xl text-primary'>
+        <h2 className='font-bold text-2xl text-primary pb-6'>
             Duração
         </h2>
-        <p className='text-gray-500'>Selecione a Duração do Video</p>
+        <p className='text-gray-500 pb-4'>Duração do video que será produzido</p>
         <Select onValueChange={(value)=> {
             setSelectedOption(value);
             value != 'Prompt Customizado' && onUserSelect('duration', value)

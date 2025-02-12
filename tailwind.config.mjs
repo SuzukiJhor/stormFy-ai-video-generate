@@ -54,7 +54,18 @@ export default {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		// Adicione aqui os keyframes para o efeito de slide de cima pra baixo
+		keyframes: {
+			slideDown: {
+			'0%': { transform: 'translateY(-20px)', opacity: 0 },
+			'100%': { transform: 'translateY(0)', opacity: 1 },
+			},
+		},
+		// Crie a classe de animação utilizando os keyframes acima
+		animation: {
+			slideDown: 'slideDown 0.5s ease-out forwards',
+		},
   	}
   },
   plugins: [require("tailwindcss-animate")],

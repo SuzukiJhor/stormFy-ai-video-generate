@@ -162,6 +162,8 @@ async function insertVideoData(videoInfo, createdBy) {
         audioFileUrl: videoInfo.audioScript,
         captions: videoInfo.captions,
         imageList: videoInfo.imageUrl,
+        title: videoInfo.title,
+        description: videoInfo.description,
         createdBy: createdBy,
     })
 }

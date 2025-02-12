@@ -26,8 +26,8 @@ export default function SelectStyle({onUserSelect}) {
     
   return (
     <div className='mt-7'>
-        <h2 className='font-bold text-2xl text-primary'>Style</h2>
-        <p className='text-gray-500 p-1'>Selecione seu Estilo de Video</p>
+        <h2 className='font-bold text-2xl text-primary pb-6'>Style</h2>
+        <p className='text-gray-500 pb-6'>Selecione seu Estilo de Video</p>
         <div className='grid grid-cols-2 md:grid-cols-3
             lg:grid-cols-5 xl:grid-cols-6 gap-5 mt-03
         '>

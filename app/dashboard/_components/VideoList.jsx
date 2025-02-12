@@ -13,12 +13,15 @@ export default function VideoList({ videoList }) {
   }, [setVideoinfo, setOpenPlayDialog])
 
   return (
-    <div className='mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+    <div
+      className='mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+      style={{ animationDelay: '0.9s' }}
+    >
       {videoList?.map((video, index) => (
         <div
           key={index}
           onClick={() => SetdataInfoVideo(video)}
-          className='cursor-pointer hover:scale-105 transition-all'
+          className='cursor-pointer hover:scale-110 transition-all'
         >
           <Thumbnail
             component={RemotionVideo}
@@ -35,7 +38,7 @@ export default function VideoList({ videoList }) {
               captions: video.captions,
               imageUrl: video.imageList,
               videoScript: video.script,
-              setDurationFrame: (v) => {}
+              setDurationFrame: (v) => { }
             }}
           />
         </div>

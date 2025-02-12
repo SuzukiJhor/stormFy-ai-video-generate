@@ -4,16 +4,20 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button';
-import SelectTopic from './_components/SelectTopic'
+import TitleVideo from './_components/TitleVideo';
+import SelectTopic from './_components/SelectTopic';
 import SelectStyle from './_components/SelectStyle';
 import LoadingCreate from './_components/LoadingCreate';
 import SelectDurations from './_components/SelectDurations';
 import { useVideoDataContext } from '@/app/context/videoDataContext';
 import AlertDialogComponent from '../_components/AlertDialog';
 import { PlayerDialog } from '../_components/PlayerDialog';
+import DescriptionVideo from './_components/DescriptionVideo';
+import { Checkbox } from "@/components/ui/checkbox"
 
 export default function CreateNew() {
   const [loading, setLoading] = React.useState(false);
+  const [showDescription, setShowDescription] = React.useState(false);
   const [formData, setFormData] = React.useState({});
   const { videoData, setVideoData } = useVideoDataContext();
   const [playVideo, setPlayVideo] = React.useState(false);
@@ -109,6 +113,8 @@ export default function CreateNew() {
   }
 
   React.useEffect(() => {
+    console.log(formData.title)
+    console.log(formData.DescriptionVideo)
     if (success) setPlayVideo(true);
   }, [videoData, success, error])
 
@@ -122,9 +128,23 @@ export default function CreateNew() {
         <SelectStyle onUserSelect={onHandleInputChange} />
         {/* Duração */}
         <SelectDurations onUserSelect={onHandleInputChange} />
-        {/* Duração */}
+        {/* Titulo */}
+        <TitleVideo onUserSelect={onHandleInputChange} />
+        {/* Descrição */}
+        <div className="flex items-center space-x-2 pt-8">
+          <Checkbox
+            onClick={() => setShowDescription(prev => (!prev))}
+          />
+          <label className="font-bold text-primary">
+            Adicionar Descrição
+          </label>
+        </div>
+        {showDescription && (
+          <DescriptionVideo onUserSelect={onHandleInputChange} />
+        )}
+        {/* Button */}
         <Button
-          className='mt-10 w-full hover:bg-neutral-400 hover:text-emerald-700'
+          className='mt-10 w-full hover:bg-neutral-400'
           onClick={onHandleClickCreate}
         >Criar Short Video</Button>
         <LoadingCreate loading={loading} />

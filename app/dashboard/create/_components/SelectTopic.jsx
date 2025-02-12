@@ -22,7 +22,7 @@ export default function SelectTopic({onUserSelect}) {
     const [ selectedOption, setSelectedOption ] = React.useState();
   return (
     <div>
-        <h2 className='font-bold text-2xl text-primary'>Conteudo</h2>
+        <h2 className='font-bold text-2xl text-primary pb-6'>Conteudo</h2>
         <p className='text-gray-500'>Qual o Tópico do seu Video ?</p>
         <Select onValueChange={(value) => {
           setSelectedOption(value)

@@ -6,8 +6,29 @@ import { Button } from "@/components/ui/button";
 import { useUserInfoContext } from '@/app/context/userInfoContext';
 
 export default function Header() {
-  const { userInfo } = useUserInfoContext();
   const router = useRouter();
+  const { user } = useUser();
+  const { userInfo, setUserInfo } = useUserInfoContext();
+  const userEmail = user?.primaryEmailAddress?.emailAddress || '';
+
+  async function fetchInfoUser() {
+    if (userInfo !== null) return;
+    if (userEmail.length === 0) return;
+    try {
+      const response = await axios.get('/api/user-info', {
+        headers: { 'User-Email': userEmail }
+      });
+      const { data } = response;
+      setUserInfo(Number(data));
+    } catch (error) {
+      console.error('Erro ao buscar vídeos:', error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchInfoUser();
+  }, [userEmail])
+
   return (
     <div className='p-3 px-5 flex items-center justify-between shadow-md border-b-2 border-emerald-700'>
       <div className='flex gap-3 items-center'>
@@ -17,12 +38,12 @@ export default function Header() {
       <div className='flex gap-3 items-center'>
         <Image src={'/coin.ico'} alt='logo' width={30} height={30} />
         {userInfo ? (
-          <h2 className='text-yellow-500 font-bold'>{userInfo}</h2>
+          <h2 className='text-yellow-500 font-bold text-xl'>{userInfo}</h2>
         ) :
-          <h2 className='text-yellow-500 font-bold'>0</h2>
+          <h2 className='text-yellow-500 font-bold text-xl'>0</h2>
         }
         <Button
-          className="px-6 py-3 text-lg tracking-widest font-semibold rounded-lg bg-primary transition-all duration-300 shadow-md hover:bg-neutral-300 hover:text-emerald-700"
+          className="px-6 py-3 text-lg tracking-widest font-semibold rounded-lg bg-primary duration-300 shadow-md hover:bg-neutral-400"
           onClick={() => router.push("/dashboard")}
         >
           Dashboard

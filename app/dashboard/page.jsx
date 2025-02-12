@@ -10,7 +10,6 @@ import { useUserInfoContext } from '../context/userInfoContext'
 
 export default function Dashboard() {
   const { user } = useUser();
-  const { userInfo, setUserInfo } = useUserInfoContext();
   const userEmail = user?.primaryEmailAddress?.emailAddress || '';
   const [videoList, setVideoList] = React.useState([]);
   async function fetchVideoDataByUser() {
@@ -31,34 +30,16 @@ export default function Dashboard() {
     }
   }
 
-  async function fetchInfoUser() {
-    if (userInfo !== null) return;
-    if (userEmail.length === 0) return;
-    try {
-      const response = await axios.get('/api/user-info', {
-        headers: { 'User-Email': userEmail }
-      });
-      const { data } = response;
-      setUserInfo(Number(data));
-    } catch (error) {
-      console.error('Erro ao buscar vídeos:', error);
-    }
-  }
-
   React.useEffect(() => {
     fetchVideoDataByUser();
   }, [fetchVideoDataByUser, videoList, setVideoList])
 
-  React.useEffect(() => {
-    fetchInfoUser();
-  }, [userEmail])
-
   return (
     <div>
       <div className='flex justify-between items-center'>
-        <h2 className='font-bold text-2xl text-emerald-700'>Dashboard</h2>
+        <h1 className='font-bold text-primary text-2xl text-emerald-700'>Meu Painel</h1>
         <Link href={'/dashboard/create'}>
-          <Button className='hover:bg-neutral-300 hover:text-emerald-700'> + Criar Um</Button>
+          <Button className='hover:bg-neutral-400'> + Criar Um</Button>
         </Link>
       </div>
       {/*Empty State*/}
