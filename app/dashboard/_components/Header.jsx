@@ -1,8 +1,8 @@
 import React from 'react'
-import { Button } from "@/components/ui/button";
-import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image'
+import { UserButton } from '@clerk/nextjs';
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { useUserInfoContext } from '@/app/context/userInfoContext';
 
 export default function Header() {
@@ -15,8 +15,12 @@ export default function Header() {
         <h2 className='font-bold text-xl'>StormFy IA</h2>
       </div>
       <div className='flex gap-3 items-center'>
-      <Image src={'/coin.ico'} alt='logo' width={30} height={30} />
-        <h2>{ userInfo }</h2>
+        <Image src={'/coin.ico'} alt='logo' width={30} height={30} />
+        {userInfo ? (
+          <h2 className='text-yellow-500 font-bold'>{userInfo}</h2>
+        ) :
+          <h2 className='text-yellow-500 font-bold'>0</h2>
+        }
         <Button
           className="px-6 py-3 text-lg tracking-widest font-semibold rounded-lg bg-primary transition-all duration-300 shadow-md hover:bg-neutral-300 hover:text-emerald-700"
           onClick={() => router.push("/dashboard")}

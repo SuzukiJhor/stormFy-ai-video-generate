@@ -3,7 +3,7 @@ import React from 'react';
 const UserInfoContext = React.createContext();
 
 export function UserInfoProvider({ children }) {
-    const [userInfo, setUserInfo] = React.useState(30);
+    const [userInfo, setUserInfo] = React.useState(null);
     return (
         <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
             {children}

@@ -1,17 +1,18 @@
 'use client'
 import React from 'react'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import EmptyState from './_components/EmptyState'
 import axios from 'axios';
 import { useUser } from '@clerk/nextjs'
 import VideoList from './_components/VideoList'
+import { Button } from '@/components/ui/button'
+import EmptyState from './_components/EmptyState'
+import { useUserInfoContext } from '../context/userInfoContext'
 
 export default function Dashboard() {
   const { user } = useUser();
+  const { userInfo, setUserInfo } = useUserInfoContext();
   const userEmail = user?.primaryEmailAddress?.emailAddress || '';
   const [videoList, setVideoList] = React.useState([]);
-
   async function fetchVideoDataByUser() {
     if (!userEmail) return;
     if (videoList.length !== 0) return;
@@ -30,9 +31,27 @@ export default function Dashboard() {
     }
   }
 
+  async function fetchInfoUser() {
+    if (userInfo !== null) return;
+    if (userEmail.length === 0) return;
+    try {
+      const response = await axios.get('/api/user-info', {
+        headers: { 'User-Email': userEmail }
+      });
+      const { data } = response;
+      setUserInfo(Number(data));
+    } catch (error) {
+      console.error('Erro ao buscar vídeos:', error);
+    }
+  }
+
   React.useEffect(() => {
-    fetchVideoDataByUser()
+    fetchVideoDataByUser();
   }, [fetchVideoDataByUser, videoList, setVideoList])
+
+  React.useEffect(() => {
+    fetchInfoUser();
+  }, [userEmail])
 
   return (
     <div>
