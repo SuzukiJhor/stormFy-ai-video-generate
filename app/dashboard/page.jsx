@@ -15,16 +15,18 @@ export default function Dashboard() {
   async function fetchVideoDataByUser() {
     if (!userEmail) return;
     if (videoList.length !== 0) return;
+    fetchByEmail();
+  }
+
+  async function fetchByEmail() {
     try {
       const response = await axios.get('/api/video-data', {
-        headers: {
-          'User-Email': userEmail
-        }
+        headers: { 'User-Email': userEmail }
       });
       const { data } = response;
       setVideoList(Array.isArray(data) ? data : [data]);
-    } catch (err) {
-      console.error('Erro ao buscar vídeos:', err);
+    } catch (error) {
+      console.error('Erro ao buscar vídeos:', error);
     }
   }
 
@@ -50,7 +52,7 @@ export default function Dashboard() {
       {videoList.length !== 0 &&
         <VideoList videoList={videoList} />
       }
-      
+
     </div>
   )
 }

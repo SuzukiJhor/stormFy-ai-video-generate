@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image'
 import { useRouter } from "next/navigation";
+import { useUserInfoContext } from '@/app/context/userInfoContext';
 
 export default function Header() {
+  const { userInfo } = useUserInfoContext();
   const router = useRouter();
   return (
     <div className='p-3 px-5 flex items-center justify-between shadow-md border-b-2 border-emerald-700'>
@@ -13,6 +15,8 @@ export default function Header() {
         <h2 className='font-bold text-xl'>StormFy IA</h2>
       </div>
       <div className='flex gap-3 items-center'>
+      <Image src={'/coin.ico'} alt='logo' width={30} height={30} />
+        <h2>{ userInfo }</h2>
         <Button
           className="px-6 py-3 text-lg tracking-widest font-semibold rounded-lg bg-primary transition-all duration-300 shadow-md hover:bg-neutral-300 hover:text-emerald-700"
           onClick={() => router.push("/dashboard")}
