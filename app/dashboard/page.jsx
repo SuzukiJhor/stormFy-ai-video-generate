@@ -6,16 +6,16 @@ import { useUser } from '@clerk/nextjs'
 import VideoList from './_components/VideoList'
 import { Button } from '@/components/ui/button'
 import EmptyState from './_components/EmptyState'
-import { useUserInfoContext } from '../context/userInfoContext'
 
 export default function Dashboard() {
   const { user } = useUser();
   const userEmail = user?.primaryEmailAddress?.emailAddress || '';
   const [videoList, setVideoList] = React.useState([]);
+
   async function fetchVideoDataByUser() {
     if (!userEmail) return;
     if (videoList.length !== 0) return;
-    fetchByEmail();
+    await fetchByEmail();
   }
 
   async function fetchByEmail() {

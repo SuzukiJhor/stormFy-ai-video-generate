@@ -1,5 +1,7 @@
-import React from 'react'
+import React from 'react';
+import axios from 'axios';
 import Image from 'next/image'
+import { useUser } from '@clerk/nextjs'
 import { UserButton } from '@clerk/nextjs';
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -12,6 +14,7 @@ export default function Header() {
   const userEmail = user?.primaryEmailAddress?.emailAddress || '';
 
   async function fetchInfoUser() {
+    console.log(userEmail)
     if (userInfo !== null) return;
     if (userEmail.length === 0) return;
     try {
@@ -25,8 +28,8 @@ export default function Header() {
     }
   }
 
-  React.useEffect(() => {
-    fetchInfoUser();
+  React.useEffect(async() => {
+    await fetchInfoUser();
   }, [userEmail])
 
   return (
