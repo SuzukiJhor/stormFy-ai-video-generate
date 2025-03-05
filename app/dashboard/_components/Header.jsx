@@ -28,8 +28,8 @@ export default function Header() {
     }
   }
 
-  React.useEffect(async() => {
-    await fetchInfoUser();
+  React.useEffect(() => {
+    fetchInfoUser();
   }, [userEmail])
 
   return (
