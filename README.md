@@ -17,6 +17,6 @@
 #### 🎡 Drizzle ORM https://orm.drizzle.team/ <br>
 #### 🌏 Supabase - Storage<br>
 #### ⚙️ Integração modelos de IA - Google IA - https://cloud.google.com/ai/generative-ai?hl=pt-br <br>
-#### 🛞⚡Assembly IA - captions https://www.assemblyai.com/app
+#### 🛞 Assembly IA - captions https://www.assemblyai.com/app
 #### ⚡Lucide - icons https://lucide.dev/
 
