@@ -12,6 +12,7 @@
 
 <br><br>
 
+### Next.js<br>
 #### 🪢 Clerk para Autenticação https://clerk.com/ <br>
 #### 🔦 NEON PostGree ServerLess https://neon.tech/ <br>
 #### 🎡 Drizzle ORM https://orm.drizzle.team/ <br>
