@@ -1,5 +1,5 @@
 #### ⚒️ Aplicação Gerador de video com IA. 
-
+  Gera vídeos com IA, integrando autenticação via Clerk e banco serverless com Neon PostgreSQL. Utiliza Drizzle ORM para acesso aos dados e Supabase para armazenamento de arquivos. Incorpora modelos de IA da Google para geração de conteúdo e Assembly AI para legendas automáticas. Interface moderna com ícones Lucide.
 <br><br>
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
